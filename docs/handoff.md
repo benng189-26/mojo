@@ -33,3 +33,9 @@
 - Done: docs/design.md approved with 5 decisions (in decisions.md); AGENTS.md lists the .DS_Store exception. MojoCore package: models, Approval with plan hash, stubs for Rules, FolderScanner, Planner, FileEngine, History; 28 tests.
 - Results on Ben's Mac: build 0 errors 0 warnings; swift test ran 28: 4 pass (approval checks), 24 fail with notImplemented (38 assertion failures), no crashes. safety-check passes (4 allowed lines in the test helper).
 - Next: T04 (app project, no network permission), then T07 rules. Still no GitHub repo.
+
+## 2026-11-27, T04 app project
+- Done: GitHub repo benng189-26/mojo with the work so far on main. Mojo/Mojo.xcodeproj (written by hand, not yet opened in Xcode): SwiftUI window listing MojoCore's folders, App Sandbox, user-selected files read/write, no network entitlements, signed to run locally. AGENTS.md gains Layout and Build.
+- Checked here: safety check passes; project file references all resolve. Swift and Xcode can't run in the cloud, so nothing is built yet.
+- Next: Ben runs the T04 Done-when commands on the Mac; if the project won't open, fix it (two tries) before T07.
+- Mac run 2026-11-27: xcodebuild built Mojo.app; it opens. codesign shows app-sandbox, user-selected read-write and get-task-allow (Debug builds only, for the debugger), no network key. T04 done; next T07.

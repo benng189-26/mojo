@@ -20,3 +20,14 @@ Mac app that sorts loose files and suggests clean-up. Rules: docs/spec.md
 - Before finishing: swift test --package-path MojoCore
   and run the safety check in scripts/
 - After two failed attempts, stop and write in docs/handoff.md
+
+## Layout
+- MojoCore/: Swift package with rules, scanning, planning, FileEngine and tests
+- Mojo/: SwiftUI app (Mojo.xcodeproj), links ../MojoCore
+- scripts/: sample folder maker and safety check
+- docs/: spec, design, decisions, handoff and task cards
+
+## Build (macOS only)
+- swift test --package-path MojoCore
+- xcodebuild -project Mojo/Mojo.xcodeproj -scheme Mojo -derivedDataPath /tmp/MojoBuild build
+- bash scripts/safety-check.sh
