@@ -33,3 +33,8 @@
 - Done: docs/design.md approved with 5 decisions (in decisions.md); AGENTS.md lists the .DS_Store exception. MojoCore package: models, Approval with plan hash, stubs for Rules, FolderScanner, Planner, FileEngine, History; 28 tests.
 - Results on Ben's Mac: build 0 errors 0 warnings; swift test ran 28: 4 pass (approval checks), 24 fail with notImplemented (38 assertion failures), no crashes. safety-check passes (4 allowed lines in the test helper).
 - Next: T04 (app project, no network permission), then T07 rules. Still no GitHub repo.
+
+## 2026-11-27, T07 sorting rules
+- Done: Rules.classify and isProjectFolder written as pure tables in a fixed order (see the card). RulesTests grows from 7 to 15, covering packages (Pages, pkg, app, library, xcodeproj), Safari downloads, links, locked, capitals.
+- Checked here: safety check passes. Swift can't run in the cloud, so not yet compiled.
+- Next: Ben runs the RulesTests on the Mac, then T08 scanner.

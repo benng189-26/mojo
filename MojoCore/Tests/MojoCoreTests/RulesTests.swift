@@ -5,12 +5,14 @@ import XCTest
 /// Pure rule tests: no disk access. Fail with notImplemented until T07.
 final class RulesTests: XCTestCase {
     private func facts(_ name: String, type: String?, directory: Bool = false, package: Bool = false,
-                       hidden: Bool = false, cloud: CloudState = .notInCloud) -> FileFacts {
+                       hidden: Bool = false, cloud: CloudState = .notInCloud,
+                       link: Bool = false, alias: Bool = false, locked: Bool = false,
+                       writable: Bool = true) -> FileFacts {
         FileFacts(url: URL(fileURLWithPath: "/sample/\(name)"), name: name,
                   fingerprint: Fingerprint(fileID: 1, size: 1, modified: Date(timeIntervalSince1970: 0)),
                   typeIdentifier: type, isDirectory: directory, isPackage: package,
-                  isSymbolicLink: false, isAlias: false, isHidden: hidden, isLocked: false,
-                  isWritable: true, tags: [], cloud: cloud)
+                  isSymbolicLink: link, isAlias: alias, isHidden: hidden, isLocked: locked,
+                  isWritable: writable, tags: [], cloud: cloud)
     }
 
     func testCategoriesFromSpecTable() throws {
@@ -56,5 +58,65 @@ final class RulesTests: XCTestCase {
             XCTAssertTrue(try rules.isProjectFolder(topLevelNames: ["a.pdf", marker]), marker)
         }
         XCTAssertFalse(try rules.isProjectFolder(topLevelNames: ["a.pdf", "b.jpg"]))
+    }
+
+    // MARK: - T07 additions
+
+    /// The Mac ignores capitals, and so do the rules (T01 Q6).
+    func testExtensionsIgnoreCapitals() throws {
+        XCTAssertEqual(try Rules().classify(facts("Report.PDF", type: "com.adobe.pdf")), .sort(.documents))
+        XCTAssertEqual(try Rules().classify(facts("IMG_1.JPG", type: nil)), .sort(.images))
+    }
+
+    /// Pages, Numbers and Keynote files are packages but sort as documents.
+    func testDocumentPackagesSort() throws {
+        XCTAssertEqual(try Rules().classify(facts("Essay.pages", type: "com.apple.iwork.pages.sffpages",
+                                                  directory: true, package: true)), .sort(.documents))
+        XCTAssertEqual(try Rules().classify(facts("Big.pkg", type: "com.apple.installer-package-archive",
+                                                  directory: true, package: true)), .sort(.installers))
+    }
+
+    func testAppsLibrariesAndProjectPackagesStay() throws {
+        let rules = Rules()
+        XCTAssertEqual(try rules.classify(facts("Tool.app", type: "com.apple.application-bundle",
+                                                directory: true, package: true)), .stay(.systemOrApp))
+        XCTAssertEqual(try rules.classify(facts("Photos Library.photoslibrary", type: "com.apple.photos.library",
+                                                directory: true, package: true)), .stay(.library))
+        XCTAssertEqual(try rules.classify(facts("App.xcodeproj", type: "com.apple.xcode.project",
+                                                directory: true, package: true)), .stay(.projectFolder))
+        XCTAssertEqual(try rules.classify(facts("Thing.bundle", type: "com.apple.bundle",
+                                                directory: true, package: true)), .stay(.unknownType))
+    }
+
+    /// Safari's unfinished download is a package; it must not sort as a video.
+    func testUnfinishedDownloadPackagesStay() throws {
+        XCTAssertEqual(try Rules().classify(facts("film.mp4.download", type: "com.apple.safari.download",
+                                                  directory: true, package: true)), .stay(.unfinishedDownload))
+        XCTAssertEqual(try Rules().classify(facts("big.zip.part", type: "dyn.ah62d4rv4ge80"
+                                                  )), .stay(.unfinishedDownload))
+    }
+
+    func testLinksLockedAndReadOnlyStay() throws {
+        let rules = Rules()
+        XCTAssertEqual(try rules.classify(facts("a.pdf", type: "com.adobe.pdf", link: true)), .stay(.aliasOrLink))
+        XCTAssertEqual(try rules.classify(facts("a.pdf", type: "com.adobe.pdf", alias: true)), .stay(.aliasOrLink))
+        XCTAssertEqual(try rules.classify(facts("a.pdf", type: "com.adobe.pdf", locked: true)), .stay(.locked))
+        XCTAssertEqual(try rules.classify(facts("a.pdf", type: "com.adobe.pdf", writable: false)), .stay(.readOnly))
+    }
+
+    func testHiddenByNameAndSystemFilesStay() throws {
+        XCTAssertEqual(try Rules().classify(facts(".DS_Store", type: "public.data")), .stay(.hidden))
+        XCTAssertEqual(try Rules().classify(facts("Icon\r", type: "public.data")), .stay(.systemOrApp))
+    }
+
+    /// A downloaded iCloud file sorts like any other.
+    func testDownloadedCloudFileSorts() throws {
+        XCTAssertEqual(try Rules().classify(facts("a.pdf", type: "com.adobe.pdf", cloud: .downloaded)), .sort(.documents))
+    }
+
+    func testProjectMarkersIgnoreCapitals() throws {
+        XCTAssertTrue(try Rules().isProjectFolder(topLevelNames: ["PACKAGE.JSON"]))
+        XCTAssertTrue(try Rules().isProjectFolder(topLevelNames: ["My App.XcodeProj"]))
+        XCTAssertFalse(try Rules().isProjectFolder(topLevelNames: ["git-notes.txt", "package.json.bak"]))
     }
 }
