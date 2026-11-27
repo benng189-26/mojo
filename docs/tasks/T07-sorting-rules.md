@@ -1,6 +1,6 @@
 Task: T07, file type rules and what always stays
 Level: Standard, Smart review
-Status: built 2026-11-27; waiting for a run on Ben's Mac
+Status: done 2026-11-27. 15 of 15 RulesTests pass on Ben's Mac
 
 Goal: make Rules.classify and Rules.isProjectFolder real, so every item
 gets a folder or a reason to stay. Pure code: no disk access.

@@ -44,3 +44,4 @@
 - Done: Rules.classify and isProjectFolder written as pure tables in a fixed order (see the card). RulesTests grows from 7 to 15, covering packages (Pages, pkg, app, library, xcodeproj), Safari downloads, links, locked, capitals.
 - Checked here: safety check passes. Swift can't run in the cloud, so not yet compiled.
 - Next: Ben runs the RulesTests on the Mac, then T08 scanner.
+- Mac run 2026-11-27: RulesTests 15 of 15 pass. T07 done; next T08 scanner.
