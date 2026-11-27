@@ -1,6 +1,6 @@
 Task: T04, Xcode project, folder layout and AGENTS.md
 Level: Standard
-Status: built 2026-11-27; waiting for a run on Ben's Mac
+Status: done 2026-11-27. Builds on Ben's Mac; entitlements are sandbox + user-selected read-write only
 
 Goal: an empty Mojo app that opens a window, uses MojoCore, runs in the
 App Sandbox and has no network permission. No features yet.
