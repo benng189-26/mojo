@@ -124,8 +124,7 @@ else
   echo "(not macOS: tagged.pdf has no Red label)" >> "$manifest"
 fi
 
-mk "locked.pdf" "locked" "STAYS: locked file, Mojo says why"
-if is_mac; then chflags uchg "$root/locked.pdf"; else echo "(not macOS: locked.pdf is not locked)" >> "$manifest"; fi
+mk "locked.pdf" "locked" "STAYS: locked file, Mojo says why (locked below)"
 
 # --- 4. Things that always stay -------------------------------------------
 mk "movie.mp4.crdownload" "partial" "STAYS: unfinished download"
@@ -168,6 +167,17 @@ if (( many > 0 )); then
   for ((i = 1; i <= many; i++)); do printf 'x' > "$root/many-$i.txt"; done
   note "many-1.txt ... many-$many.txt" "$many loose files for the large-folder and Cancel test"
 fi
+
+# --- 7. Dates --------------------------------------------------------------
+# Mojo leaves files changed in the last 2 minutes, as they may be in use
+# (T10 decision 1). Date everything a day back, keep the old installer's
+# 2023 date, then add one file that was "just saved".
+if is_mac; then yesterday="$(date -v-1d +%Y%m%d%H%M)"; else yesterday="$(date -d '1 day ago' +%Y%m%d%H%M)"; fi
+find "$root" ! -name "old-installer.pkg" -exec touch -h -t "$yesterday" {} +
+mk "just-saved.docx" "busy" "STAYS: changed in the last 2 minutes, may be in use"
+
+# Lock last: a locked file's date cannot be changed.
+if is_mac; then chflags uchg "$root/locked.pdf"; else echo "(not macOS: locked.pdf is not locked)" >> "$manifest"; fi
 
 echo "Made $root"
 echo "Manifest: $manifest"

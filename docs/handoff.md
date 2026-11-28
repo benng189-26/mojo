@@ -59,3 +59,8 @@
 - Checked here: safety check passes; project file references resolve. Not compiled yet.
 - Next: Ben runs FolderAccessTests and the by-hand restart and rename check in the sandboxed app; record T01 Q8 in decisions.md.
 - Ben's first by-hand try (2026-11-28) picked a real folder (bentoji Website): read-only count, nothing changed; asked him to remove it. Check again gave no visible feedback, so the screen now shows 'Checked at <time>' and numbered test steps, and is labelled as a temporary test screen.
+
+## 2026-11-28, T10 FileEngine moves
+- Done: Planner builds the plan (rules, existing folder matched ignoring capitals, project folder moves nothing, files changed in the last 2 minutes stay as in use). FileEngine.apply checks the whole plan first, then per file: re-read and re-classify, pick a free name ignoring capitals, log "about to move" and fsync, make the folder (never through a link), renamex_np with RENAME_EXCL, add Mojo's colour tag ("Blue\n4") after existing tags via the tag attribute, log "moved". One JSONL log per run with start and finish lines; interruptedRuns and inProgressItem read it. Sample script now dates its files a day back, adds just-saved.docx, and locks last.
+- Checked here: safety check passes (11 allowed lines, all in tests); the sample script runs. Not compiled yet. New: 10 PlannerTests, 15 FileEngineTests.
+- Next: Ben runs the tests on his Mac. Expected: SafetyTests for undo (4) and history (1) still fail with notImplemented until T11 and T18. Suggestion for later: add setxattr and removexattr to the safety check's patterns.

@@ -4,6 +4,23 @@ import Foundation
 /// because the colour names Finder shows depend on the Mac's language.
 public enum LabelColor: Int, Codable, CaseIterable, Sendable {
     case gray = 1, green = 2, purple = 3, blue = 4, yellow = 5, red = 6, orange = 7
+
+    /// Finder's standard English name for the colour. Finder shows a standard
+    /// colour tag in the Mac's own language (T10 decision 2).
+    public var finderName: String {
+        switch self {
+        case .gray: return "Gray"
+        case .green: return "Green"
+        case .purple: return "Purple"
+        case .blue: return "Blue"
+        case .yellow: return "Yellow"
+        case .red: return "Red"
+        case .orange: return "Orange"
+        }
+    }
+
+    /// The tag as Finder stores it on disk: name, new line, colour number.
+    public var tagEntry: String { "\(finderName)\n\(rawValue)" }
 }
 
 /// The folders Mojo sorts into (spec: Sorting rules).

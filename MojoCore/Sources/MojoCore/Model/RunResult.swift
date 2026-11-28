@@ -47,6 +47,9 @@ public struct RunResult: Codable, Hashable, Sendable {
 public struct LogEntry: Codable, Hashable, Sendable {
     public enum Kind: String, Codable, Sendable {
         case aboutToMove, moved, folderCreated, labelAdded, trashed, undone, folderRemoved, putBack
+        /// First and last line of every run. A run with no `runFinished` was
+        /// interrupted (quit, crash, unplugged drive).
+        case runStarted, runFinished
     }
 
     public var id: UUID
