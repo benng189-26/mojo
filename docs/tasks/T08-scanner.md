@@ -1,6 +1,6 @@
 Task: T08, scanner for hidden files, links, online-only files and large folders
 Level: Standard, Smart review
-Status: built 2026-11-27; waiting for a run on Ben's Mac
+Status: done 2026-11-28. ScannerTests 9 + RulesTests 16 pass on Ben's Mac (after the tag fix)
 
 Goal: FolderScanner.scan and facts(for:) read the top level of a chosen
 folder into FileFacts. Read only, never follows links, never downloads
