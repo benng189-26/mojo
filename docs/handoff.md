@@ -45,3 +45,11 @@
 - Checked here: safety check passes. Swift can't run in the cloud, so not yet compiled.
 - Next: Ben runs the RulesTests on the Mac, then T08 scanner.
 - Mac run 2026-11-27: RulesTests 15 of 15 pass. T07 done; next T08 scanner.
+
+## 2026-11-27, T08 scanner
+- Done: FolderScanner reads the top level only (hidden included, links not followed, lstat file numbers), iCloud state from resource values, Cancel checked per item. New ScannerTests (9) on sample folders, including a 2000-file Cancel test. Rules: iWork folders sort even if not marked as packages; RulesTests 16.
+- Checked here: safety check passes. Not yet compiled (no Swift in the cloud).
+- Next: Ben runs ScannerTests and RulesTests on the Mac. Then the Planner, which T10 needs.
+- Mac run 1 (2026-11-28): 24 of 25 pass. ScannerTests.testTagsAreRead fails: tags read as [] on tagged.pdf. Unknown yet whether the sample script's xattr didn't stick or the scanner misses it; asked Ben for xattr -l / mdls on a fresh sample. Attempt 1 of 2.
+- Diagnosis: xattr -l shows the Red tag on tagged.pdf, so the script is fine and the tagNames resource value is what came back empty. Attempt 2: the scanner falls back to reading com.apple.metadata:_kMDItemUserTags with getxattr (read only). Note for T10: SampleFolder.tags() uses tagNames too and may need the same fallback.
+- Mac run 2 (2026-11-28): 25 of 25 pass. T08 done. Next: T09 folder access (Smart) or the Planner; FileEngine (T10) needs the Planner first.

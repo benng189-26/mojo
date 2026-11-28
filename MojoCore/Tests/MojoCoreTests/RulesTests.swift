@@ -76,6 +76,12 @@ final class RulesTests: XCTestCase {
                                                   directory: true, package: true)), .sort(.installers))
     }
 
+    /// T08: an iWork file still sorts when the Mac does not mark it as a package.
+    func testIWorkFolderSortsEvenIfNotMarkedAsPackage() throws {
+        XCTAssertEqual(try Rules().classify(facts("Essay.pages", type: "public.folder", directory: true)), .sort(.documents))
+        XCTAssertEqual(try Rules().classify(facts("Pages", type: "public.folder", directory: true)), .stay(.existingFolder))
+    }
+
     func testAppsLibrariesAndProjectPackagesStay() throws {
         let rules = Rules()
         XCTAssertEqual(try rules.classify(facts("Tool.app", type: "com.apple.application-bundle",

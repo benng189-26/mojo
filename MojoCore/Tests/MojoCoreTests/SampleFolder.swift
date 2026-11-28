@@ -17,7 +17,8 @@ enum SampleFolder {
     }
 
     /// Makes a new sample folder and returns its URL.
-    static func make(file: StaticString = #filePath, line: UInt = #line) throws -> URL {
+    /// `many` adds that many loose text files, for large-folder tests.
+    static func make(many: Int = 0, file: StaticString = #filePath, line: UInt = #line) throws -> URL {
         let parent = FileManager.default.temporaryDirectory
             .appendingPathComponent("MojoTests-\(UUID().uuidString)", isDirectory: true)
         try FileManager.default.createDirectory(at: parent, withIntermediateDirectories: true) // safety-check: allow test sample parent in temp folder
@@ -26,6 +27,7 @@ enum SampleFolder {
         let process = Process() // safety-check: allow runs the sample folder script
         process.executableURL = URL(fileURLWithPath: "/bin/bash")
         process.arguments = [script.path, parent.path, "--large-mb", "1"]
+            + (many > 0 ? ["--many", String(many)] : [])
         let output = Pipe()
         process.standardOutput = output
         process.standardError = output
