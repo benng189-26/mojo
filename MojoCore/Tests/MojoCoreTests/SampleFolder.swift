@@ -69,6 +69,19 @@ enum SampleFolder {
         return target
     }
 
+    /// An empty folder beside a sample, for tests that check nothing leaks out.
+    static func addFolder(_ url: URL) throws {
+        precondition(url.path.contains("/MojoTests-"), "folders are for sample folders only")
+        try FileManager.default.createDirectory(at: url, withIntermediateDirectories: false) // safety-check: allow test makes a folder beside its sample
+    }
+
+    /// Simulates a link appearing where Mojo wants to make a folder.
+    static func addLink(named name: String, pointingTo target: URL, in folder: URL) throws {
+        precondition(folder.path.contains("/MojoTests-"), "links are for sample folders only")
+        let url = folder.appendingPathComponent(name)
+        try FileManager.default.createSymbolicLink(at: url, withDestinationURL: target) // safety-check: allow test adds a link inside its sample
+    }
+
     /// Simulates the user dropping a new file into a folder.
     static func addFile(named name: String, in folder: URL) throws {
         let url = folder.appendingPathComponent(name)
@@ -88,8 +101,10 @@ func contents(_ folder: URL, _ relative: String) throws -> String {
 }
 
 func tags(_ folder: URL, _ relative: String) throws -> [String] {
-    let url = folder.appendingPathComponent(relative)
-    return try url.resourceValues(forKeys: [.tagNamesKey]).tagNames ?? []
+    var url = folder.appendingPathComponent(relative)
+    url.removeAllCachedResourceValues()
+    // Same fallback as the scanner: tagNames can read empty (T08).
+    return FolderScanner.tags(of: url, resourceTags: try url.resourceValues(forKeys: [.tagNamesKey]).tagNames)
 }
 
 /// Names of everything inside a folder, sorted.

@@ -1,6 +1,6 @@
 Task: T10, FileEngine moves, labels, name clashes, move log
 Level: Smart
-Status: card written 2026-11-28, waiting for Ben's approval. No code yet.
+Status: approved by Ben 2026-11-28 as written; built, waiting for a run on Ben's Mac
 
 Goal: turn an approved plan into real moves on a sample folder, safely.
 Mojo builds the plan (Planner), and FileEngine carries it out one file at a
@@ -18,9 +18,11 @@ May change:
 - MojoCore/Tests/MojoCoreTests/PlannerTests.swift, FileEngineTests.swift (new)
 - MojoCore/Tests/MojoCoreTests/SampleFolder.swift (helpers to change a file
   after the plan, sample folders only, with allow tags)
+- scripts/make-sample-folder.sh (date the sample a day back and add one
+  just-saved file; approved by Ben 2026-11-28)
 - docs/handoff.md, docs/decisions.md, this card
 
-Must not change: SafetyTests.swift, scripts/, the app, entitlements
+Must not change: SafetyTests.swift, scripts/safety-check.sh, the app, entitlements
 
 How it works:
 - Planner: each scanned item goes through Rules. A category becomes a

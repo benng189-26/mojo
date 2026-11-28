@@ -10,4 +10,9 @@ public enum MojoError: Error, Equatable, Sendable {
     case cancelled
     /// The folder is no longer reachable (renamed, unplugged or access lost).
     case folderUnavailable(URL)
+    /// The approved plan asks for something FileEngine never does, such as
+    /// moving an item that is not directly inside the chosen folder.
+    case invalidPlan(String)
+    /// The move log could not be written, so nothing more was moved.
+    case logWriteFailed(String)
 }
