@@ -38,7 +38,11 @@ public struct Rules: Sendable {
         if ext.hasSuffix("library") || Self.libraryTypes.contains(type ?? "") { return .stay(.library) }
 
         // 5. Folders that are not packages are never moved or rearranged.
-        if facts.isDirectory && !facts.isPackage { return .stay(.existingFolder) }
+        //    Pages, Numbers and Keynote files are folders on disk; a Mac that
+        //    has never had iWork may not mark them as packages (T08).
+        if facts.isDirectory && !facts.isPackage && !Self.documentPackageExtensions.contains(ext) {
+            return .stay(.existingFolder)
+        }
 
         // 6. Project packages such as App.xcodeproj.
         if Self.projectPackageExtensions.contains(ext) { return .stay(.projectFolder) }
@@ -99,6 +103,8 @@ public struct Rules: Sendable {
     static let libraryTypes: Set<String> = [
         "com.apple.photos.library", "com.apple.iphoto.library", "com.apple.music.library",
     ]
+
+    static let documentPackageExtensions: Set<String> = ["pages", "numbers", "key"]
 
     static let projectMarkerNames: Set<String> = [".git", "package.json", "package.swift"]
     static let projectPackageExtensions: Set<String> = ["xcodeproj", "xcworkspace"]

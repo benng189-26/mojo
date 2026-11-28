@@ -45,3 +45,8 @@
 - Checked here: safety check passes. Swift can't run in the cloud, so not yet compiled.
 - Next: Ben runs the RulesTests on the Mac, then T08 scanner.
 - Mac run 2026-11-27: RulesTests 15 of 15 pass. T07 done; next T08 scanner.
+
+## 2026-11-27, T08 scanner
+- Done: FolderScanner reads the top level only (hidden included, links not followed, lstat file numbers), iCloud state from resource values, Cancel checked per item. New ScannerTests (9) on sample folders, including a 2000-file Cancel test. Rules: iWork folders sort even if not marked as packages; RulesTests 16.
+- Checked here: safety check passes. Not yet compiled (no Swift in the cloud).
+- Next: Ben runs ScannerTests and RulesTests on the Mac. Then the Planner, which T10 needs.
