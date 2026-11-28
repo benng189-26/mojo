@@ -50,3 +50,4 @@
 - Done: FolderScanner reads the top level only (hidden included, links not followed, lstat file numbers), iCloud state from resource values, Cancel checked per item. New ScannerTests (9) on sample folders, including a 2000-file Cancel test. Rules: iWork folders sort even if not marked as packages; RulesTests 16.
 - Checked here: safety check passes. Not yet compiled (no Swift in the cloud).
 - Next: Ben runs ScannerTests and RulesTests on the Mac. Then the Planner, which T10 needs.
+- Mac run 1 (2026-11-28): 24 of 25 pass. ScannerTests.testTagsAreRead fails: tags read as [] on tagged.pdf. Unknown yet whether the sample script's xattr didn't stick or the scanner misses it; asked Ben for xattr -l / mdls on a fresh sample. Attempt 1 of 2.
