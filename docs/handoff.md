@@ -58,3 +58,4 @@
 - Done: MojoCore FolderAccess (bookmarks saved in the app's own preferences; ready only if it resolves at the same path and can be listed; renamed, missing or no access → Choose again). App Folders screen with Choose folder, Desktop/Downloads/Documents shortcuts (still through the Open panel), Remove from list, item count. 8 FolderAccessTests; SampleFolder gains a rename helper for sample folders, with visible allow tags.
 - Checked here: safety check passes; project file references resolve. Not compiled yet.
 - Next: Ben runs FolderAccessTests and the by-hand restart and rename check in the sandboxed app; record T01 Q8 in decisions.md.
+- Ben's first by-hand try (2026-11-28) picked a real folder (bentoji Website): read-only count, nothing changed; asked him to remove it. Check again gave no visible feedback, so the screen now shows 'Checked at <time>' and numbered test steps, and is labelled as a temporary test screen.

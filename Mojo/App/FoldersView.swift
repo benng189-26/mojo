@@ -7,12 +7,20 @@ struct FoldersView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Folders").font(.title.bold())
-            Text("Mojo only looks at folders you choose here. It doesn't sort anything yet.")
+            Text("Folder access test").font(.title.bold())
+            Text("A temporary screen for testing. The real start screen comes later. Mojo only reads the folders you choose here: it counts what's inside and changes nothing.")
                 .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("1. Click Choose folder… and pick a folder made by the sample script (MojoSample-…).")
+                Text("2. Quit Mojo (⌘Q) and open it again. The folder should still say Ready.")
+                Text("3. Rename that folder in Finder, then click Check again. It should ask you to choose it again.")
+            }
+            .font(.callout)
 
             if model.rows.isEmpty {
-                Text("No folders yet.").foregroundStyle(.secondary)
+                Text("No folders chosen yet.").foregroundStyle(.secondary)
             } else {
                 List(model.rows) { row in
                     FolderRow(row: row,
@@ -33,6 +41,9 @@ struct FoldersView: View {
                 }
                 Spacer()
                 Button("Check again") { model.refresh() }
+            }
+            if let summary = model.checkSummary {
+                Text(summary).font(.callout).foregroundStyle(.secondary)
             }
             if let problem = model.problem {
                 Text(problem).foregroundStyle(.red)

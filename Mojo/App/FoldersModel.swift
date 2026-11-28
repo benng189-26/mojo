@@ -14,6 +14,8 @@ final class FoldersModel: ObservableObject {
 
     @Published private(set) var rows: [Row] = []
     @Published var problem: String?
+    /// When the folders were last checked, so Check again visibly does something.
+    @Published private(set) var lastChecked: Date?
 
     private let access = FolderAccess(store: DefaultsFolderStore())
 
@@ -31,6 +33,17 @@ final class FoldersModel: ObservableObject {
             }
             return Row(folder: folder, status: status, itemCount: count)
         }
+        lastChecked = Date()
+    }
+
+    /// One line saying what the last check found.
+    var checkSummary: String? {
+        guard let lastChecked, !rows.isEmpty else { return nil }
+        let time = lastChecked.formatted(date: .omitted, time: .shortened)
+        let waiting = rows.filter { if case .ready = $0.status { return false } else { return true } }.count
+        return waiting == 0
+            ? "Checked at \(time): every folder is ready."
+            : "Checked at \(time): \(waiting) folder\(waiting == 1 ? " needs" : "s need") choosing again."
     }
 
     /// Show the system Open panel, starting in `start` if given. The user
