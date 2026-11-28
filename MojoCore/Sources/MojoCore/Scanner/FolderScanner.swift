@@ -79,8 +79,31 @@ public struct FolderScanner: Sendable {
             isHidden: values.isHidden == true || item.lastPathComponent.hasPrefix("."),
             isLocked: values.isUserImmutable == true,
             isWritable: values.isWritable ?? false,
-            tags: values.tagNames ?? [],
+            tags: Self.tags(of: item, resourceTags: values.tagNames),
             cloud: Self.cloudState(values))
+    }
+
+    /// Finder tags. On Ben's Mac the tagNames resource value came back empty
+    /// for a file whose tag attribute was set (T08 run 1), so when it is empty
+    /// the tag attribute itself is read. Read only: getxattr never writes.
+    static func tags(of url: URL, resourceTags: [String]?) -> [String] {
+        if let resourceTags, !resourceTags.isEmpty { return resourceTags }
+        let name = "com.apple.metadata:_kMDItemUserTags"
+        let path = url.path
+        let size = getxattr(path, name, nil, 0, 0, XATTR_NOFOLLOW)
+        guard size > 0 else { return [] }
+        var data = Data(count: size)
+        let read = data.withUnsafeMutableBytes { buffer in
+            getxattr(path, name, buffer.baseAddress, size, 0, XATTR_NOFOLLOW)
+        }
+        guard read == size,
+              let list = try? PropertyListSerialization.propertyList(from: data, format: nil) as? [String]
+        else { return [] }
+        // Each entry is "Name" or "Name\n<colour number>"; keep the name.
+        return list.compactMap { entry in
+            let tagName = entry.split(separator: "\n", maxSplits: 1, omittingEmptySubsequences: false).first.map(String.init)
+            return (tagName?.isEmpty == false) ? tagName : nil
+        }
     }
 
     /// iCloud state from resource values only (T01 Q1, Q2, Q7).
