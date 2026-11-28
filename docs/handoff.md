@@ -53,3 +53,9 @@
 - Mac run 1 (2026-11-28): 24 of 25 pass. ScannerTests.testTagsAreRead fails: tags read as [] on tagged.pdf. Unknown yet whether the sample script's xattr didn't stick or the scanner misses it; asked Ben for xattr -l / mdls on a fresh sample. Attempt 1 of 2.
 - Diagnosis: xattr -l shows the Red tag on tagged.pdf, so the script is fine and the tagNames resource value is what came back empty. Attempt 2: the scanner falls back to reading com.apple.metadata:_kMDItemUserTags with getxattr (read only). Note for T10: SampleFolder.tags() uses tagNames too and may need the same fallback.
 - Mac run 2 (2026-11-28): 25 of 25 pass. T08 done. Next: T09 folder access (Smart) or the Planner; FileEngine (T10) needs the Planner first.
+
+## 2026-11-28, T09 folder access
+- Done: MojoCore FolderAccess (bookmarks saved in the app's own preferences; ready only if it resolves at the same path and can be listed; renamed, missing or no access → Choose again). App Folders screen with Choose folder, Desktop/Downloads/Documents shortcuts (still through the Open panel), Remove from list, item count. 8 FolderAccessTests; SampleFolder gains a rename helper for sample folders, with visible allow tags.
+- Checked here: safety check passes; project file references resolve. Not compiled yet.
+- Next: Ben runs FolderAccessTests and the by-hand restart and rename check in the sandboxed app; record T01 Q8 in decisions.md.
+- Ben's first by-hand try (2026-11-28) picked a real folder (bentoji Website): read-only count, nothing changed; asked him to remove it. Check again gave no visible feedback, so the screen now shows 'Checked at <time>' and numbered test steps, and is labelled as a temporary test screen.
