@@ -58,6 +58,17 @@ enum SampleFolder {
         try handle.close()
     }
 
+    /// Simulates the user renaming a sample folder in Finder. Only ever
+    /// called on a folder this helper made inside the temporary folder.
+    @discardableResult
+    static func rename(_ folder: URL, to newName: String) throws -> URL { // safety-check: allow helper that renames a sample folder
+        precondition(folder.path.contains("/MojoTests-"), "rename is for sample folders only")
+        let target = folder.deletingLastPathComponent().appendingPathComponent(newName, isDirectory: true)
+        XCTAssertFalse(FileManager.default.fileExists(atPath: target.path))
+        try FileManager.default.moveItem(at: folder, to: target) // safety-check: allow test renames its own sample folder
+        return target
+    }
+
     /// Simulates the user dropping a new file into a folder.
     static func addFile(named name: String, in folder: URL) throws {
         let url = folder.appendingPathComponent(name)

@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		A10000000000000000000101 /* MojoApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000201 /* MojoApp.swift */; };
 		A10000000000000000000102 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000202 /* ContentView.swift */; };
+		A10000000000000000000104 /* FoldersModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000205 /* FoldersModel.swift */; };
+		A10000000000000000000105 /* FoldersView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000206 /* FoldersView.swift */; };
 		A10000000000000000000103 /* MojoCore in Frameworks */ = {isa = PBXBuildFile; productRef = A10000000000000000000901 /* MojoCore */; };
 /* End PBXBuildFile section */
 
@@ -16,6 +18,8 @@
 		A10000000000000000000201 /* MojoApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MojoApp.swift; sourceTree = "<group>"; };
 		A10000000000000000000202 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A10000000000000000000203 /* Mojo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Mojo.entitlements; sourceTree = "<group>"; };
+		A10000000000000000000205 /* FoldersModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldersModel.swift; sourceTree = "<group>"; };
+		A10000000000000000000206 /* FoldersView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldersView.swift; sourceTree = "<group>"; };
 		A10000000000000000000204 /* Mojo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Mojo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -44,6 +48,8 @@
 			children = (
 				A10000000000000000000201 /* MojoApp.swift */,
 				A10000000000000000000202 /* ContentView.swift */,
+				A10000000000000000000205 /* FoldersModel.swift */,
+				A10000000000000000000206 /* FoldersView.swift */,
 				A10000000000000000000203 /* Mojo.entitlements */,
 			);
 			path = App;
@@ -128,6 +134,8 @@
 			files = (
 				A10000000000000000000101 /* MojoApp.swift in Sources */,
 				A10000000000000000000102 /* ContentView.swift in Sources */,
+				A10000000000000000000104 /* FoldersModel.swift in Sources */,
+				A10000000000000000000105 /* FoldersView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
